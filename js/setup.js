@@ -42,6 +42,9 @@ var WIZARD_EYES_COLORS = [
 ];
 
 var userDialog = document.querySelector('.setup');
+var userDialogOpen = document.querySelector('.setup-open');
+var userDialogClose = document.querySelector('.setup-close');
+var userDialogUsername = document.querySelector('.setup-user-name');
 var similarListContainer = document.querySelector('.setup-similar');
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
@@ -93,9 +96,54 @@ var renderWizardElements = function (wizards) {
   similarListElement.appendChild(fragment);
 };
 
-// Показывает окно настройки
+// Функция-обработчик нажатия на Esc
 
-userDialog.classList.remove('hidden');
+var onPopupEscPress = function (evt) {
+  if (evt.key === 'Escape' && userDialogUsername !== document.activeElement) {
+    evt.preventDefault();
+    closePopup();
+  }
+};
+
+// Функция, открывающая окно настроек
+
+var openPopup = function () {
+  userDialog.classList.remove('hidden');
+
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+// Функция, закрывающая окно настроек
+
+var closePopup = function () {
+  userDialog.classList.add('hidden');
+
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+// Открывает окно настройки
+
+userDialogOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+userDialogOpen.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    openPopup();
+  }
+});
+
+// Закрывает окно настройки
+
+userDialogClose.addEventListener('click', function () {
+  closePopup();
+});
+
+userDialogClose.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    closePopup();
+  }
+});
 
 // Показывает блок со списком похожих персонажей
 
