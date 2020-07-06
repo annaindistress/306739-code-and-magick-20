@@ -41,7 +41,24 @@ var WIZARD_EYES_COLORS = [
   'green'
 ];
 
+var WIZARD_FIREBALL_COLORS = [
+  '#ee4830',
+  '#30a8ee',
+  '#5ce6c0',
+  '#e848d5',
+  '#e6e848'
+];
+
 var userDialog = document.querySelector('.setup');
+var userDialogOpen = document.querySelector('.setup-open');
+var userDialogClose = userDialog.querySelector('.setup-close');
+var userDialogName = userDialog.querySelector('.setup-user-name');
+var userDialogCoat = userDialog.querySelector('.wizard-coat');
+var userDialogCoatInput = userDialog.querySelector('input[name="coat-color"]');
+var userDialogEyes = userDialog.querySelector('.wizard-eyes');
+var userDialogEyesInput = userDialog.querySelector('input[name="eyes-color"]');
+var userDialogFireball = userDialog.querySelector('.setup-fireball-wrap');
+var userDialogFireballInput = userDialog.querySelector('input[name="fireball-color"]');
 var similarListContainer = document.querySelector('.setup-similar');
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
@@ -93,9 +110,66 @@ var renderWizardElements = function (wizards) {
   similarListElement.appendChild(fragment);
 };
 
-// Показывает окно настройки
+// Функция для изменения цвета элемента
 
-userDialog.classList.remove('hidden');
+var changeElementColor = function (element, input, color, isBackgroundColor) {
+  if (isBackgroundColor) {
+    element.style.backgroundColor = color;
+  } else {
+    element.style.fill = color;
+  }
+
+  input.value = color;
+};
+
+// Функция-обработчик нажатия на Esc
+
+var onPopupEscPress = function (evt) {
+  if (evt.key === 'Escape' && userDialogName !== document.activeElement) {
+    evt.preventDefault();
+    closePopup();
+  }
+};
+
+// Функция, открывающая окно настроек
+
+var openPopup = function () {
+  userDialog.classList.remove('hidden');
+
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+// Функция, закрывающая окно настроек
+
+var closePopup = function () {
+  userDialog.classList.add('hidden');
+
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+// Открывает окно настройки
+
+userDialogOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+userDialogOpen.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    openPopup();
+  }
+});
+
+// Закрывает окно настройки
+
+userDialogClose.addEventListener('click', function () {
+  closePopup();
+});
+
+userDialogClose.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    closePopup();
+  }
+});
 
 // Показывает блок со списком похожих персонажей
 
@@ -104,3 +178,40 @@ similarListContainer.classList.remove('hidden');
 // Отрисовка похожих персонажей
 
 renderWizardElements(getRandomWizards(WIZARD_AMOUNT));
+
+// Меняет цвет пальто мага по клику
+
+userDialogCoat.addEventListener('click', function () {
+  changeElementColor(userDialogCoat, userDialogCoatInput, getRandomData(WIZARD_COAT_COLORS));
+});
+
+userDialogCoat.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    changeElementColor(userDialogCoat, userDialogCoatInput, getRandomData(WIZARD_COAT_COLORS));
+  }
+});
+
+// Меняет цвет глаз мага по клику
+
+userDialogEyes.addEventListener('click', function () {
+  changeElementColor(userDialogEyes, userDialogEyesInput, getRandomData(WIZARD_EYES_COLORS));
+});
+
+userDialogEyes.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    changeElementColor(userDialogEyes, userDialogEyesInput, getRandomData(WIZARD_EYES_COLORS));
+  }
+});
+
+// Меняет цвет фаербола по клику
+
+userDialogFireball.addEventListener('click', function () {
+  changeElementColor(userDialogFireball, userDialogFireballInput, getRandomData(WIZARD_FIREBALL_COLORS), true);
+});
+
+userDialogFireball.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    changeElementColor(userDialogFireball, userDialogFireballInput, getRandomData(WIZARD_FIREBALL_COLORS), true);
+  }
+});
+
