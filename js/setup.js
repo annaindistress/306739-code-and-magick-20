@@ -47,6 +47,8 @@ var userDialogClose = userDialog.querySelector('.setup-close');
 var userDialogName = userDialog.querySelector('.setup-user-name');
 var userDialogCoat = userDialog.querySelector('.wizard-coat');
 var userDialogCoatInput = userDialog.querySelector('input[name="coat-color"]');
+var userDialogEyes = userDialog.querySelector('.wizard-eyes');
+var userDialogEyesInput = userDialog.querySelector('input[name="eyes-color"]');
 var similarListContainer = document.querySelector('.setup-similar');
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
@@ -173,3 +175,16 @@ userDialogCoat.addEventListener('keydown', function (evt) {
     changeElementColor(userDialogCoat, userDialogCoatInput, getRandomData(WIZARD_COAT_COLORS));
   }
 });
+
+// Меняет цвет глаз мага по клику
+
+userDialogEyes.addEventListener('click', function () {
+  changeElementColor(userDialogEyes, userDialogEyesInput, getRandomData(WIZARD_EYES_COLORS));
+});
+
+userDialogEyes.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    changeElementColor(userDialogEyes, userDialogEyesInput, getRandomData(WIZARD_EYES_COLORS));
+  }
+});
+
