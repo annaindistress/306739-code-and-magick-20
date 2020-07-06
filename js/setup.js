@@ -41,6 +41,14 @@ var WIZARD_EYES_COLORS = [
   'green'
 ];
 
+var WIZARD_FIREBALL_COLORS = [
+  '#ee4830',
+  '#30a8ee',
+  '#5ce6c0',
+  '#e848d5',
+  '#e6e848'
+];
+
 var userDialog = document.querySelector('.setup');
 var userDialogOpen = document.querySelector('.setup-open');
 var userDialogClose = userDialog.querySelector('.setup-close');
@@ -49,6 +57,8 @@ var userDialogCoat = userDialog.querySelector('.wizard-coat');
 var userDialogCoatInput = userDialog.querySelector('input[name="coat-color"]');
 var userDialogEyes = userDialog.querySelector('.wizard-eyes');
 var userDialogEyesInput = userDialog.querySelector('input[name="eyes-color"]');
+var userDialogFireball = userDialog.querySelector('.setup-fireball-wrap');
+var userDialogFireballInput = userDialog.querySelector('input[name="fireball-color"]');
 var similarListContainer = document.querySelector('.setup-similar');
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
@@ -102,8 +112,13 @@ var renderWizardElements = function (wizards) {
 
 // Функция для изменения цвета элемента
 
-var changeElementColor = function (element, input, color) {
-  element.style.fill = color;
+var changeElementColor = function (element, input, color, isBackgroundColor) {
+  if (isBackgroundColor) {
+    element.style.backgroundColor = color;
+  } else {
+    element.style.fill = color;
+  }
+
   input.value = color;
 };
 
@@ -185,6 +200,18 @@ userDialogEyes.addEventListener('click', function () {
 userDialogEyes.addEventListener('keydown', function (evt) {
   if (evt.key === 'Enter') {
     changeElementColor(userDialogEyes, userDialogEyesInput, getRandomData(WIZARD_EYES_COLORS));
+  }
+});
+
+// Меняет цвет фаербола по клику
+
+userDialogFireball.addEventListener('click', function () {
+  changeElementColor(userDialogFireball, userDialogFireballInput, getRandomData(WIZARD_FIREBALL_COLORS), true);
+});
+
+userDialogFireball.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    changeElementColor(userDialogFireball, userDialogFireballInput, getRandomData(WIZARD_FIREBALL_COLORS), true);
   }
 });
 
