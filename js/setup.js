@@ -43,8 +43,10 @@ var WIZARD_EYES_COLORS = [
 
 var userDialog = document.querySelector('.setup');
 var userDialogOpen = document.querySelector('.setup-open');
-var userDialogClose = document.querySelector('.setup-close');
-var userDialogUsername = document.querySelector('.setup-user-name');
+var userDialogClose = userDialog.querySelector('.setup-close');
+var userDialogName = userDialog.querySelector('.setup-user-name');
+var userDialogCoat = userDialog.querySelector('.wizard-coat');
+var userDialogCoatInput = userDialog.querySelector('input[name="coat-color"]');
 var similarListContainer = document.querySelector('.setup-similar');
 var similarListElement = document.querySelector('.setup-similar-list');
 var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
@@ -96,10 +98,17 @@ var renderWizardElements = function (wizards) {
   similarListElement.appendChild(fragment);
 };
 
+// Функция для изменения цвета элемента
+
+var changeElementColor = function (element, input, color) {
+  element.style.fill = color;
+  input.value = color;
+};
+
 // Функция-обработчик нажатия на Esc
 
 var onPopupEscPress = function (evt) {
-  if (evt.key === 'Escape' && userDialogUsername !== document.activeElement) {
+  if (evt.key === 'Escape' && userDialogName !== document.activeElement) {
     evt.preventDefault();
     closePopup();
   }
@@ -152,3 +161,15 @@ similarListContainer.classList.remove('hidden');
 // Отрисовка похожих персонажей
 
 renderWizardElements(getRandomWizards(WIZARD_AMOUNT));
+
+// Меняет цвет пальто мага по клику
+
+userDialogCoat.addEventListener('click', function () {
+  changeElementColor(userDialogCoat, userDialogCoatInput, getRandomData(WIZARD_COAT_COLORS));
+});
+
+userDialogCoat.addEventListener('keydown', function (evt) {
+  if (evt.key === 'Enter') {
+    changeElementColor(userDialogCoat, userDialogCoatInput, getRandomData(WIZARD_COAT_COLORS));
+  }
+});
