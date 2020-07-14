@@ -11,6 +11,7 @@
   var popupEyesInput = popup.querySelector('input[name="eyes-color"]');
   var popupFireball = popup.querySelector('.setup-fireball-wrap');
   var popupFireballInput = popup.querySelector('input[name="fireball-color"]');
+  var popupHandle = popup.querySelector('.upload');
 
   // Функция-обработчик нажатия на Esc
 
@@ -33,6 +34,7 @@
 
   var closePopup = function () {
     popup.classList.add('hidden');
+    popup.removeAttribute('style');
 
     document.removeEventListener('keydown', onPopupEscPress);
   };
@@ -107,5 +109,55 @@
     if (evt.key === 'Enter') {
       changeElementColor(popupFireball, popupFireballInput, window.util.getRandomData(window.const.wizardFireballColors), true);
     }
+  });
+
+  // Перемещение поп-апа с настройками пользователя
+
+  popupHandle.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY
+    };
+
+    var dragged = false;
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      dragged = true;
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX,
+        y: startCoords.y - moveEvt.clientY
+      };
+
+      startCoords = {
+        x: moveEvt.clientX,
+        y: moveEvt.clientY
+      };
+
+      popup.style.top = (popup.offsetTop - shift.y) + 'px';
+      popup.style.left = (popup.offsetLeft - shift.x) + 'px';
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+
+      if (dragged) {
+        var onClickPreventDefault = function (clickEvt) {
+          clickEvt.preventDefault();
+          popupHandle.removeEventListener('click', onClickPreventDefault);
+        };
+        popupHandle.addEventListener('click', onClickPreventDefault);
+      }
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   });
 })();
