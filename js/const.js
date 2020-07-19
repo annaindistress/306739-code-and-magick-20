@@ -3,28 +3,6 @@
 (function () {
   var WIZARD_AMOUNT = 4;
 
-  var WIZARD_NAMES = [
-    'Иван',
-    'Хуан Себастьян',
-    'Мария',
-    'Кристоф',
-    'Виктор',
-    'Юлия',
-    'Люпита',
-    'Вашингтон'
-  ];
-
-  var WIZARD_SURNAMES = [
-    'да Марья',
-    'Верон',
-    'Мирабелла',
-    'Вальц',
-    'Онопко',
-    'Топольницкая',
-    'Нионго',
-    'Ирвинг'
-  ];
-
   var WIZARD_COAT_COLORS = [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
@@ -52,8 +30,6 @@
 
   window.const = {
     wizardAmount: WIZARD_AMOUNT,
-    wizardNames: WIZARD_NAMES,
-    wizardSurnames: WIZARD_SURNAMES,
     wizardCoatColors: WIZARD_COAT_COLORS,
     wizardEyesColors: WIZARD_EYES_COLORS,
     wizardFireballColors: WIZARD_FIREBALL_COLORS
