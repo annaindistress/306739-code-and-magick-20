@@ -20,6 +20,8 @@
     var fragment = document.createDocumentFragment();
     var wizardsAmount = data.length > MAX_WIZARD_AMOUNT ? MAX_WIZARD_AMOUNT : data.length;
 
+    similarListElement.innerHTML = '';
+
     for (var i = 0; i < wizardsAmount; i++) {
       fragment.appendChild(renderWizard(data[i]));
     }
