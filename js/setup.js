@@ -1,39 +1,46 @@
 'use strict';
 
 (function () {
+  var wizards = [];
+
+  var onSuccessOccurs = function (data) {
+    wizards = data;
+    window.render(wizards);
+  };
+
+  var hideElement = function (element) {
+    element.remove();
+  };
+
+  var onErrorOccurs = function (errorMessage) {
+    var element = document.createElement('div');
+
+    element.style.position = 'absolute';
+    element.style.left = 0;
+    element.style.right = 0;
+    element.style.zIndex = 100;
+    element.style.margin = '0 auto';
+    element.style.padding = '15px';
+    element.style.fontSize = '30px';
+    element.style.textAlign = 'center';
+    element.style.backgroundColor = 'rgba(255, 0, 0, 0.6)';
+
+    element.textContent = errorMessage;
+    var body = document.querySelector('body');
+    body.insertAdjacentElement('afterbegin', element);
+
+    setTimeout(hideElement, 5000, element);
+  };
+
   var similarListContainer = document.querySelector('.setup-similar');
-  var similarListElement = document.querySelector('.setup-similar-list');
-  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-
-  // Функция создания DOM-элемента на основе JS-объекта
-
-  var renderWizard = function (wizard) {
-    var wizardElement = similarWizardTemplate.cloneNode(true);
-
-    wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
-
-    return wizardElement;
-  };
-
-  // Функция заполнения блока DOM-элементами на основе массива JS-объектов
-
-  var renderWizardElements = function (wizards) {
-    var fragment = document.createDocumentFragment();
-
-    for (var i = 0; i < window.const.wizardAmount; i++) {
-      fragment.appendChild(renderWizard(wizards[i]));
-    }
-
-    similarListElement.appendChild(fragment);
-  };
-
-  // Показывает блок со списком похожих персонажей
-
   similarListContainer.classList.remove('hidden');
 
-  // Отрисовка похожих персонажей
+  window.backend.load(onSuccessOccurs, onErrorOccurs);
 
-  window.backend.load(renderWizardElements, window.dialog.onErrorOccurs);
+  var popupForm = window.dialog.popup.querySelector('.setup-wizard-form');
+
+  popupForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(popupForm), window.dialog.close, onErrorOccurs);
+    evt.preventDefault();
+  });
 })();
